@@ -1,6 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import {navigate} from '@reach/router';
+import moment from 'moment'
+
 
 const EditNinja = (props) => {
     const [formInfo, setFormInfo] = useState({
@@ -77,7 +79,8 @@ const EditNinja = (props) => {
                 </div>
                 <div className="form-group">
                     <label htmlFor="">Graduation Date</label>
-                    <input type="date" name="graduation_date" id="" className="form-control" onChange= {changeHandler} defaultValue={formInfo.graduation_date}/>
+                    <p>{moment(formInfo.graduation_date).format('YYYY-MM-DD')}</p>
+                    <input type="date" name="graduation_date" id="" className="form-control" onChange= {changeHandler} value={moment(formInfo.graduation_date).format('YYYY-MM-DD')}/>
                     {/* <p className="text-danger">{errors.graduation_date? errors.graduation_date.message: ""}</p> */}
 
                 </div>
