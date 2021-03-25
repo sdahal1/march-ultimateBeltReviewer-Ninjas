@@ -1,10 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {Link} from '@reach/router';
+import {Link, navigate} from '@reach/router';
 import axios from 'axios';
 
 const AllNinjas = () => {
 
     const [allNinjas, setAllNinjas]= useState([])
+
+    const [deleteClicked, setDeleteClicked] = useState(false)
 
 
     useEffect(()=>{
@@ -16,7 +18,19 @@ const AllNinjas = () => {
                 setAllNinjas(response.data.results)
             })
             .catch(err=> console.log("errors retrieving all students", err))
-    }, [])
+    }, [deleteClicked])
+
+    const deleteStudent= (e, ninjaid)=>{
+        axios.delete(`http://localhost:8000/api/students/delete/${ninjaid}`)
+            .then(response=> {
+                console.log("JUST SENT A DELETE REQUREST")
+                console.log(response)
+                // navigate("/")
+                setDeleteClicked(!deleteClicked)
+
+            })
+            .catch(err=> console.log(err))
+    }
     
 
     return (
@@ -25,11 +39,14 @@ const AllNinjas = () => {
                 <h3>Ninjas (0 belts)</h3>
 
                 {allNinjas.filter(ninja => ninja.numOfBelts==0).map((ninja, i)=>{
-                    return <div className="card">
+                    return <div  key = {i} className="card">
                         <div className="card-body">
                             <h4 className="card-title"><Link to = {`/ninjas/${ninja._id}`}>{ninja.first_name} {ninja.last_name}</Link></h4>
                             <p>Graduation Date: {ninja.graduation_date}</p>
                             <p>Number of Belts: {ninja.numOfBelts}</p>
+                            <button className="btn-dark"><Link to = {`/ninjas/edit/${ninja._id}`}>Edit Student</Link></button>
+                            <button className="btn-danger m-2" onClick={(e)=>deleteStudent(e, ninja._id )}>Drop Student</button>
+
                         </div>
                     </div>
                 })}
@@ -39,11 +56,15 @@ const AllNinjas = () => {
                 <h3>Samaurais (1-2 belts)</h3>
 
                 {allNinjas.filter(ninja => ninja.numOfBelts>=1 && ninja.numOfBelts <3).map((ninja, i)=>{
-                    return <div className="card">
+                    return <div key = {i}  className="card">
                         <div className="card-body">
                             <h4 className="card-title"><Link to = {`/ninjas/${ninja._id}`}>{ninja.first_name} {ninja.last_name}</Link></h4>
                             <p>Graduation Date: {ninja.graduation_date}</p>
                             <p>Number of Belts: {ninja.numOfBelts}</p>
+                            <button className="btn-dark"><Link to = {`/ninjas/edit/${ninja._id}`}>Edit Student</Link></button>
+                            <button className="btn-danger m-2" onClick={(e)=>deleteStudent(e, ninja._id )}>Drop Student</button>
+
+
                         </div>
                     </div>
                 })}
@@ -53,11 +74,15 @@ const AllNinjas = () => {
                 <h3>Senseis (3+ belts)</h3>
 
                 {allNinjas.filter(ninja => ninja.numOfBelts>=3).map((ninja, i)=>{
-                    return <div className="card">
+                    return <div key = {i} className="card">
                         <div className="card-body">
                             <h4 className="card-title"><Link to = {`/ninjas/${ninja._id}`}>{ninja.first_name} {ninja.last_name}</Link></h4>
                             <p>Graduation Date: {ninja.graduation_date}</p>
                             <p>Number of Belts: {ninja.numOfBelts}</p>
+                            <button className="btn-dark"><Link to = {`/ninjas/edit/${ninja._id}`}>Edit Student</Link></button>
+                            <button className="btn-danger m-2" onClick={(e)=>deleteStudent(e, ninja._id )}>Drop Student</button>
+                            
+
                         </div>
                     </div>
                 })}

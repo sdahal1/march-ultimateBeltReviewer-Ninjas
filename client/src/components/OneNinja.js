@@ -1,9 +1,22 @@
 import React, {useEffect, useState} from 'react';
+import {navigate} from '@reach/router'
 import axios from 'axios';
 
 const OneNinja = (props) => {
 
     const [individualStudent, setIndividualStudent] = useState({})
+
+    const deleteStudent = (e)=>{
+        console.log("TRYING TO DELETE A STUDENT")
+        axios.delete(`http://localhost:8000/api/students/delete/${props.studentID}`)
+            .then(response=> {
+                console.log("JUST SENT A DELETE REQUREST")
+                console.log(response)
+                navigate("/")
+
+            })
+            .catch(err=> console.log(err))
+    }
 
 
     useEffect(()=>{
@@ -22,6 +35,7 @@ const OneNinja = (props) => {
                 <p className="card-text">Graduation Date: {individualStudent.graduation_date}</p>
                 <p className="card-text">Number of belts: {individualStudent.numOfBelts}</p>
                 <p className="card-text">Vet Status: {individualStudent.isVeteran? "Thank you for your service":"You're welcome for the veterans service"}</p>
+                <button className="btn-danger" onClick={deleteStudent}>Drop Student</button>
 
                 
 
